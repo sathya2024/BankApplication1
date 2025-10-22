@@ -1,0 +1,34 @@
+﻿@model List<Banking.LoanTransaction>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Account ID</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Penalty</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.TransactionId</td>
+                    <td>@item.LNAccountId</td>
+                    <td>@item.Amount</td>
+                    <td>@item.TransactionType</td>
+                    <td>@item.TransactionDate?.ToShortDateString()</td>
+                    <td>@item.Penalty</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">No transactions available for this account.</div>
+}

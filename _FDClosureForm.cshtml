@@ -1,0 +1,13 @@
+﻿@{
+    var id = ViewBag.CustomerId as string;
+}
+
+<div class="pastel-card">
+    <div class="card-header">Premature FD Closure</div>
+
+    @using (Html.BeginForm("PrematureWithdraw", "Customer", FormMethod.Post))
+    {
+        @Html.Hidden("id", id)
+        <button type="submit" class="btn btn-danger">Close FD Prematurely</button>
+    }
+</div>

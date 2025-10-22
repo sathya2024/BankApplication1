@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Banking.LoanTransaction>
+@{
+    Layout = null;
+}
+
+<h3>Loan Transactions</h3>
+
+<div class="form-group">
+    <label>Loan Account ID:</label>
+    <input type="text" id="loanId" class="form-control" />
+    <button class="btn btn-primary" onclick="loadTransactions()">View Transactions</button>
+
+
+</div>
+
+<table class="table table-bordered" style="margin-top:15px;">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Amount (₹)</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Penalty (₹)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model)
+        {
+            <tr>
+                <td>@t.TransactionId</td>
+                <td>@t.Amount</td>
+                <td>@t.TransactionType</td>
+                <td>@(t.TransactionDate?.ToString("dd-MM-yyyy HH:mm:ss") ?? "-")</td>
+                <td>@t.Penalty</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+function loadTransactions(){
+    var id = $('#loanId').val();
+    if(!id) { alert('Enter Loan Account ID'); return; }
+
+    $.ajax({
+        url: '/Manager/_LoanTransactions',
+        type: 'POST',
+        data: { lnAccountId: id },
+        success: function(data){
+            $('#partialContainer').html(data);
+        },
+        error: function(){ alert('Error loading transactions'); }
+    });
+}
+</script>
+

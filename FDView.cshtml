@@ -1,0 +1,175 @@
+﻿@model List<Banking.FixedDeposit>
+@{
+    ViewBag.Title = "FDView";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+
+<style>
+    .pastel-card {
+        background-color: #f8fbff;
+        border: 1px solid #a3c4f3;
+        color: #333;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+        .pastel-card .card-header {
+            background-color: #e3f0ff;
+            color: #6fa8dc;
+            font-weight: 600;
+            border-bottom: 1px solid #a3c4f3;
+            padding: 0.75rem 1rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+    .pastel-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .pastel-table th, .pastel-table td {
+            text-align: center;
+            padding: 0.75rem;
+            border: 1px solid #a3c4f3;
+        }
+
+        .pastel-table thead {
+            background-color: #e3f0ff;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .pastel-table tbody tr:hover {
+            background-color: #f0f8ff;
+        }
+
+    .section-title {
+        font-weight: 600;
+        color: #6fa8dc;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+   
+    .btn-pastel {
+        font-weight: 600;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.3rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-withdraw {
+        background-color: #6fa8dc;
+        color: white;
+    }
+
+        .btn-withdraw:hover {
+            background-color: #5a9bdc;
+            color: white;
+        }
+
+    .btn-premature {
+        background-color: #f7b2b7;
+        color: white;
+    }
+
+        .btn-premature:hover {
+            background-color: #e88c92;
+            color: white;
+        }
+
+    .btn-closed {
+        background-color: #d3d3d3;
+        color: #666;
+        cursor: not-allowed;
+    }
+</style>
+
+
+
+@if (TempData["Message"] != null)
+{
+    var success = TempData["Success"] != null && (bool)TempData["Success"];
+    var message = TempData["Message"].ToString();
+    var amount = TempData["Amount"] != null ? (decimal)TempData["Amount"] : 0;
+
+    <script>
+    window.onload = function () {
+        var success = @((bool)TempData["Success"] ? "true" : "false");
+        var message = "@TempData["Message"]";
+        var amount = "@TempData["Amount"]";
+
+        if (success === "true") {
+            alert("✅ " + message + "\nAmount refunded: ₹" + amount);
+        } else {
+            alert("❌ " + message);
+        }
+    };
+    </script>
+}
+
+<div class="pastel-card">
+    <div class="card-header">Fixed Deposit Accounts</div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning m-3">No Fixed Deposits found.</div>
+    }
+    else
+    {
+        <table class="pastel-table">
+            <thead>
+                <tr>
+                    <th>FD Account ID</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Open Date</th>
+                    <th>Maturity Date</th>
+                    <th>Closure Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fd in Model)
+                {
+                    <tr>
+                        <td>@fd.FDAccountId</td>
+                        <td>₹@fd.Amount</td>
+                        <td>@fd.Status</td>
+                        <td>@(fd.OpenDate?.ToShortDateString() ?? "N/A")</td>
+                        <td>@(fd.MaturityDate?.ToShortDateString() ?? "N/A")</td>
+                        <td>@(fd.CloseDate?.ToShortDateString() ?? "—")</td>
+                        <td>
+
+                            @if (DateTime.Today >= fd.MaturityDate?.Date)
+                            {
+                                using (Html.BeginForm("WithdrawFD", "Customer", FormMethod.Post))
+                                {
+                                    @Html.Hidden("fdAccountId", fd.FDAccountId)
+                                    <button type="submit" class="btn btn-pastel btn-withdraw btn-sm">Withdraw</button>
+                                }
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("PrematureWithdraw", "Customer", FormMethod.Post))
+                                {
+                                    @Html.Hidden("fdAccountId", fd.FDAccountId)
+                                    <button type="submit" class="btn btn-pastel btn-premature btn-sm">Premature Close</button>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div class="pastel-card">
+    <div class="card-header">FD Transactions</div>
+    @Html.Action("FDTransactions", "Customer", new { id = ViewBag.CustomerId })
+</div>

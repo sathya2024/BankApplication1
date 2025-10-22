@@ -1,0 +1,47 @@
+﻿
+
+@model Banking.LoanAccount
+@{
+    Layout = null;
+}
+
+<h3>Foreclose Loan</h3>
+
+@if (ViewBag.Message != null)
+{
+    <p style="color:green; font-weight:bold;">@ViewBag.Message</p>
+}
+
+<form id="forecloseLoanForm" method="post" action="@Url.Action("_ForecloseLoan", "Manager")">
+    <div class="form-group">
+        <label>Loan Account ID:</label>
+        <input type="text" name="lnAccountId" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Amount Paid (₹):</label>
+        <input type="number" name="amountPaid" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Penalty (₹):</label>
+        <input type="number" name="penalty" class="form-control" value="0" />
+    </div>
+
+    <button type="submit" class="btn btn-danger">Foreclose Loan</button>
+</form>
+
+<script>
+$('#forecloseLoanForm').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(data){
+            $('#partialContainer').html(data);
+        },
+        error: function(){ alert('Error foreclosing loan'); }
+    });
+});
+</script>

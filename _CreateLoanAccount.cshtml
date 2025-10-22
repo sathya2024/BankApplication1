@@ -1,0 +1,66 @@
+﻿@model Banking.LoanAccount
+@{
+    Layout = null;
+}
+
+<h3>Create Loan Account</h3>
+<hr />
+
+@if (ViewBag.Message != null)
+{
+    <p style="color:green; font-weight:bold;">@ViewBag.Message</p>
+}
+
+<form id="createLoanForm" method="post" action="@Url.Action("_CreateLoanAccount", "Manager")">
+    <div class="form-group">
+        <label>Customer ID:</label>
+        <input type="text" name="CustomerId" class="form-control" maxlength="10" required />
+    </div>
+
+    <div class="form-group">
+        <label>Loan Amount (₹):</label>
+        <input type="number" name="LoanAmount" class="form-control" min="10000" required />
+    </div>
+
+    <div class="form-group">
+        <label>Time Period (years):</label>
+        <input type="number" name="TimePeriod" class="form-control" step="0.1" required />
+    </div>
+
+    <div class="form-group">
+        <label>Month Due Date:</label>
+        <input type="number" name="MonthDueDate" class="form-control" min="1" max="31" required />
+        <small class="text-muted">Enter the day of the month (1 to 31)</small>
+    </div>
+
+
+    <div class="form-group">
+        <label>Monthly Take Home (₹):</label>
+        <input type="number" name="MonthlyTakeHome" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Created By (Employee ID):</label>
+        <input type="number" name="CreatedBy" class="form-control" required />
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-success">Create Loan</button>
+</form>
+
+<script>
+$('#createLoanForm').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(data){
+            $('#partialContainer').html(data);
+        },
+        error: function(){
+            alert("Error creating loan account.");
+        }
+    });
+});
+</script>

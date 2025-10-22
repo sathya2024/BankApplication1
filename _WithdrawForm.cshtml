@@ -1,0 +1,23 @@
+﻿@model Banking.SavingsAccount
+
+@if (Model == null)
+{
+    <div class="alert alert-secondary">Withdrawal option unavailable—no account found.</div>
+}
+else
+{
+    <div class="card mb-3 shadow-sm pastel-card">
+        <div class="card-header">Withdraw Funds</div>
+        <div class="card-body">
+            @using (Html.BeginForm("Withdraw", "Customer", FormMethod.Post))
+            {
+                @Html.Hidden("id", Model.CustomerId)
+                <div class="mb-3">
+                    <label for="amount">Amount</label>
+                    <input type="number" name="amount" class="form-control" min="100" required />
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Withdraw</button>
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Savings Account Management";
+    Layout = "~/Shared/_LayoutPage1.cshtml"; 
+}
+
+<div class="dashboard-container">
+    <h2>Savings Account Management</h2>
+
+
+    <div class="tabs">
+        <button class="tablink active" onclick="loadPartial('CreateSBAccount', this)">Create SB Account</button>
+        <button class="tablink" onclick="loadPartial('CloseSBAccount', this)">Close SB Account</button>
+        <button class="tablink" onclick="loadPartial('ViewSBTransactions', this)">View Transactions</button>
+    </div>
+
+
+
+
+    <div id="partialContainer" style="margin-top:30px;">
+        <p>Select an option to manage savings accounts.</p>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+function loadPartial(actionName, button) {
+    var url = '@Url.Action("CreateSBAccount","Manager")'.replace("CreateSBAccount", actionName);
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(data) {
+            $('#partialContainer').html(data);
+            $('.tablink').removeClass('active');
+            $(button).addClass('active');
+        },
+        error: function(xhr) {
+            alert('Error loading content: ' + xhr.status + ' ' + xhr.statusText);
+        }
+    });
+}
+
+
+// Load the default tab on page load
+$(document).ready(function() {
+    loadPartial('CreateSBAccount', $('.tablink.active')[0]);
+});
+</script>
+
+<style>
+    .tablink {
+        padding: 10px 20px;
+        border: none;
+        background-color: #5563DE;
+        color: white;
+        border-radius: 8px;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+        .tablink:hover {
+            background-color: #3e4bd0;
+        }
+
+        .tablink.active {
+            background-color: #3e4bd0;
+        }
+</style>

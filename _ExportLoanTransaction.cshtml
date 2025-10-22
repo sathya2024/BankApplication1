@@ -1,0 +1,46 @@
+﻿
+@model IEnumerable<Banking.LoanTransaction>
+@{
+    Layout = null;
+}
+
+<h3>Export Loan Transactions</h3>
+
+<div class="form-group">
+    <label>Loan Account ID:</label>
+    <input type="text" id="exportLoanId" class="form-control" />
+    <button class="btn btn-success" onclick="exportTransactions()">Export PDF/Excel</button>
+</div>
+
+<table class="table table-bordered" style="margin-top:15px;">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Amount (₹)</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Penalty (₹)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model)
+        {
+            <tr>
+                <td>@t.TransactionId</td>
+                <td>@t.Amount</td>
+                <td>@t.TransactionType</td>
+                <td>@t.TransactionDate?.ToShortDateString()</td>
+                <td>@t.Penalty</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+function exportTransactions(){
+    var id = $('#exportLoanId').val();
+    if(!id){ alert('Enter Loan Account ID'); return; }
+    window.open('/Export/LoanTransactions?lnAccountId=' + id, '_blank');
+}
+</script>
+

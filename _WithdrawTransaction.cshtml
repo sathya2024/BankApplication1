@@ -1,0 +1,66 @@
+﻿
+<form id="withdrawForm" method="post" action="@Url.Action("Withdraw","Manager")">
+    <div class="form-group">
+        <label>SB Account ID:</label>
+        <input type="text" name="sbAccountId" class="form-control" maxlength="10" required />
+    </div>
+    <div class="form-group">
+        <label>Amount (₹):</label>
+        <input type="number" name="amount" class="form-control" min="1" required />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-danger">Withdraw</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <p style="color:red; font-weight:bold; margin-top:10px;">@ViewBag.Message</p>
+}
+
+@if (ViewBag.Transactions != null)
+{
+    <h4>Recent Transactions</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Account ID</th>
+                <th>Amount (₹)</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in ViewBag.Transactions as List<Banking.SavingsTransaction>)
+            {
+                <tr>
+                    <td>@t.TransactionId</td>
+                    <td>@t.SBAccountId</td>
+                    <td>@t.Amount</td>
+                    <td>@t.TransactionType</td>
+                    <td>@(t.TransactionDate?.ToString("dd-MM-yyyy HH:mm:ss") ?? "-")</td>
+                    <td>@t.Balance</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<script>
+$('#withdrawForm').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(data){
+            $('#transactionPartial').html(data);
+        },
+        error: function(){
+            alert("Withdrawal failed!");
+        }
+    });
+});
+</script>
+

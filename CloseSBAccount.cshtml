@@ -1,0 +1,16 @@
+﻿@*@model List<dynamic>
+
+    @{
+        ViewBag.Title = "Close Savings Account";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <div class="dashboard-container">
+        <h2>Close Savings Account</h2>
+
+        @Html.Partial("_CloseSBAccount", Model)
+    </div>*@
+
+@model List<Banking.Customer>
+
+@Html.Partial("_CloseSBAccount", Model)

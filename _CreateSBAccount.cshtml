@@ -1,0 +1,114 @@
+﻿@model Banking.Customer
+
+<h3>Create Savings Bank Account</h3>
+<hr />
+
+<form id="createAccountForm" method="post" action="@Url.Action("CreateSBAccount", "Manager")">
+    <div class="form-group">
+        <label>Customer ID:</label>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="CustomerId" name="CustomerId" class="form-control" maxlength="10" required />
+            <button type="button" class="btn btn-info" onclick="fetchCustomerDetails()">Fetch Details</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer Name:</label>
+        <input type="text" id="CustomerName" name="CustomerName" class="form-control" maxlength="20" required />
+    </div>
+
+    <div class="form-group">
+        <label>Phone Number:</label>
+        <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" maxlength="10" required />
+    </div>
+
+    <div class="form-group">
+        <label>Date of Birth:</label>
+        <input type="date" id="CustomerDOB" name="CustomerDOB" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Address:</label>
+        <input type="text" id="CustomerAddress" name="CustomerAddress" class="form-control" maxlength="100" />
+    </div>
+
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" id="CustomerEmail" name="CustomerEmail" class="form-control" maxlength="30" />
+    </div>
+
+    <div class="form-group">
+        <label>PAN:</label>
+        <input type="text" id="PAN" name="PAN" class="form-control" maxlength="8" required />
+    </div>
+
+    <div class="form-group">
+        <label>Initial Deposit (₹):</label>
+        <input type="number" name="InitialDeposit" class="form-control" min="1000" required />
+    </div>
+
+    <div class="form-group">
+        <label>Created By (Employee ID):</label>
+        <input type="number" name="CreatedBy" class="form-control" required />
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-success">Create Account</button>
+</form>
+
+<script>
+    function fetchCustomerDetails() {
+        var customerId = $('#CustomerId').val();
+        if (!customerId) {
+            alert("Please enter a Customer ID.");
+            return;
+        }
+
+        $.ajax({
+            url: '/Manager/GetCustomerDetails',
+            type: 'GET',
+            data: { customerId: customerId },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    $('#CustomerName').val(data.CustomerName);
+                    $('#PhoneNumber').val(data.PhoneNumber);
+                    $('#CustomerDOB').val(data.CustomerDOB.substring(0, 10));
+                    $('#CustomerAddress').val(data.CustomerAddress);
+                    $('#CustomerEmail').val(data.CustomerEmail);
+                    $('#PAN').val(data.PAN);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert("Error fetching customer details.");
+            }
+        });
+    }
+
+    $('#createAccountForm').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (data) {
+                $('#partialContainer').html(data);
+                var msg = $(data).find('p').text();
+                if (msg.includes("Account ID")) {
+                    alert(msg);
+                }
+            },
+            error: function () {
+                alert("Error creating account.");
+            }
+        });
+    });
+</script>
+
+@if (ViewBag.Message != null)
+{
+    <p style="color:green; font-weight:bold; margin-top:20px;">@ViewBag.Message</p>
+}
+

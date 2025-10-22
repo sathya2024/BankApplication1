@@ -1,0 +1,59 @@
+﻿@model Banking.Customer
+
+@{
+    ViewBag.Title = "Add New Customer";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Add New Customer</h2>
+
+    @using (Html.BeginForm("AddCustomer", "Manager", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.CustomerName)
+                @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", placeholder = "Full Name" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.PhoneNumber)
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "10-digit Phone Number" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.CustomerDOB)
+                @Html.TextBoxFor(m => m.CustomerDOB, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.CustomerAddress)
+                @Html.TextBoxFor(m => m.CustomerAddress, new { @class = "form-control", placeholder = "Address" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.CustomerEmail)
+                @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control", placeholder = "Email Address" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                @Html.LabelFor(m => m.PAN)
+                @Html.TextBoxFor(m => m.PAN, new { @class = "form-control", placeholder = "PAN (8 characters)" })
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Set login password" required />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Add Customer</button>
+    }
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success mt-4">@ViewBag.Message</div>
+    }
+</div>

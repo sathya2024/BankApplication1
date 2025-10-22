@@ -1,0 +1,35 @@
+﻿@model Banking.LoanAccount
+
+@{
+    var loanAmount = Model.LoanAmount ?? 0;
+    var dueAmount = Model.DueAmount ?? 0;
+    var tenure = Model.TimePeriod ?? 0;
+    var startDate = Model.StartDate?.ToString("dd MMM yyyy") ?? "N/A";
+
+    decimal roi = 10;
+
+    // Convert all operands to double
+    double principal = Convert.ToDouble(loanAmount);
+    double rate = Convert.ToDouble(roi) / 1200;
+    double emiRaw = tenure > 0
+        ? principal * rate / (1 - Math.Pow(1 + rate, -Convert.ToDouble(tenure)))
+        : 0;
+
+    decimal emi = Math.Round((decimal)emiRaw, 2);
+
+
+}
+
+
+<div class="card mb-3">
+    <div class="card-header bg-primary text-white">Loan Details</div>
+    <div class="card-body">
+        <p><strong>Account ID:</strong> @Model.LNAccountId</p>
+        <p><strong>Loan Amount:</strong> ₹@string.Format("{0:N2}", Model.LoanAmount)</p>
+        <p><strong>Due Amount:</strong> ₹@string.Format("{0:N2}", Model.DueAmount)</p>
+        <p><strong>Tenure:</strong> @Model.TimePeriod months</p>
+        <p><strong>Start Date:</strong> @(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("dd MMM yyyy") : "N/A")</p>
+        <p><strong>EMI:</strong> ₹@string.Format("{0:N2}", Model.Emi)</p>
+        <p><strong>Status:</strong> @Model.LoanStatus</p>
+    </div>
+</div>

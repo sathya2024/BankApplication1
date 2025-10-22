@@ -1,0 +1,91 @@
+﻿@*@model List<Banking.LoanTransaction>
+
+    <div class="container mt-4">
+        <h4>Loan Transactions</h4>
+
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Account ID</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Penalty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TransactionId</td>
+                            <td>@item.LNAccountId</td>
+                            <td>@item.Amount</td>
+                            <td>@item.TransactionType</td>
+                            <td>@item.TransactionDate.ToShortDateString()</td>
+                            <td>@item.Penalty</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">No transactions available for this account.</div>
+        }
+    </div>*@
+
+@*@model List<Banking.LoanTransaction>
+
+    <div class="container mt-4">
+        <h4>Loan Transactions</h4>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                <strong>Error:</strong> @ViewBag.Error
+            </div>
+        }
+        else if (ViewBag.Message != null)
+        {
+            <div class="alert alert-warning">
+                @ViewBag.Message
+            </div>
+        }*@
+
+<div class="container mt-3">
+    <h4>View Loan Transactions</h4>
+
+    <div class="form-inline mb-3">
+        <input type="text" id="LoanAccountIdInput" class="form-control mr-2" placeholder="Enter Loan Account ID" maxlength="10" />
+        <button id="btnFilterLoanTransactions" class="btn btn-primary">Filter</button>
+    </div>
+
+    <div id="loanTransactionContainer">
+        <p>Please enter a Loan Account ID to view transactions.</p>
+    </div>
+</div>
+
+<script>
+    $('#btnFilterLoanTransactions').click(function () {
+        var lnAccountId = $('#LoanAccountIdInput').val().trim();
+        if (!lnAccountId) {
+            alert("Please enter a Loan Account ID.");
+            return;
+        }
+
+        $.ajax({
+            url: '/Manager/_ViewLoanTransactions',
+            type: 'GET',
+            data: { LNAccountId: lnAccountId },
+            success: function (data) {
+                $('#loanTransactionContainer').html(data);
+            },
+            error: function (xhr) {
+                alert('Error loading transactions: ' + xhr.status + ' ' + xhr.statusText);
+            }
+        });
+    });
+</script>

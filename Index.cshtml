@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Manager Dashboard";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #74ABE2, #5563DE);
+        min-height: 100vh;
+    }
+
+    .dashboard-container {
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        padding: 40px;
+        margin: 80px auto;
+        max-width: 700px;
+        text-align: center;
+    }
+
+    h2 {
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        color: #444;
+        margin-top: 25px;
+    }
+
+    p {
+        color: #555;
+        font-size: 15px;
+    }
+
+    .dashboard-links {
+        list-style-type: none;
+        padding: 0;
+        margin: 25px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+        .dashboard-links li {
+            flex: 0 0 45%;
+        }
+
+        .dashboard-links a {
+            display: block;
+            padding: 12px 15px;
+            background-color: #5563DE;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .dashboard-links a:hover {
+                background-color: #3e4bd0;
+                transform: translateY(-2px);
+            }
+
+    .message {
+        color: green;
+        font-weight: 500;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="dashboard-container">
+    <h2>Manager Dashboard</h2>
+    <br />
+    <div>
+        <h3>Welcome, Manager</h3>
+        <p>Select an option above to manage employees, approvals, or loan accounts.</p>
+    </div>
+
+    <ul class="dashboard-links">
+        @*<li><a href="@Url.Action("Index", "Manager")">Dashboard Home</a></li>*@
+        <li><a href="@Url.Action("Employees", "Manager")">Add Employee</a></li>
+        <li><a href="@Url.Action("Approve", "Manager")">Approve</a></li>
+        <li><a href="@Url.Action("DeleteEmployee", "Manager")">Delete Employee</a></li>
+        <li><a href="@Url.Action("LoanAccount", "Manager")">Loan Account</a></li>
+        <li><a href="@Url.Action("AddCustomer", "Manager")">Add Customer</a></li>
+        <li><a href="@Url.Action("DeleteCustomer", "Manager")">Delete Customer</a></li>
+        <li><a href="@Url.Action("SavingsAccount", "Manager")">Savings Account</a></li>
+
+    </ul>
+
+
+
+    @if (TempData["Message"] != null)
+    {
+        <p class="message">@TempData["Message"]</p>
+    }
+</div>

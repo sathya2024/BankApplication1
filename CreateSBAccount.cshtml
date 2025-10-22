@@ -1,0 +1,41 @@
+﻿@*@model List<Banking.Customer>
+
+    @{
+        ViewBag.Title = "Open Savings Account";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <div class="dashboard-container">
+        <h2>Open Savings Account</h2>
+
+        @using (Html.BeginForm("CreateSBAccount", "Manager", FormMethod.Post))
+        {
+            <div class="form-group">
+                <label>Select Customer</label>
+                <select name="customerId" class="form-control" required>
+                    <option value="">-- Select --</option>
+                    @foreach (var customer in Model)
+                    {
+                        <option value="@customer.CustomerId">@customer.CustomerName (@customer.CustomerId)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Initial Deposit (Min ₹1000)</label>
+                <input type="number" name="initialDeposit" class="form-control" min="1000" required />
+            </div>
+            <br/>
+
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        }
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-info mt-3">@TempData["Message"]</div>
+        }
+    </div>*@
+@model List<Banking.Customer>
+
+@Html.Partial("_CreateSBAccount", Model)
+

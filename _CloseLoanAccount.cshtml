@@ -1,0 +1,36 @@
+﻿@model Banking.LoanAccount
+@{
+    Layout = null;
+}
+
+<h3>Close Loan Account</h3>
+
+@if (ViewBag.Message != null)
+{
+    <p style="color:green; font-weight:bold;">@ViewBag.Message</p>
+}
+
+<form id="closeLoanForm" method="post" action="@Url.Action("_CloseLoanAccount", "Manager")">
+    <div class="form-group">
+        <label>Loan Account ID:</label>
+        <input type="text" name="LNAccountId" class="form-control" maxlength="10" required />
+    </div>
+
+    <button type="submit" class="btn btn-danger">Close Loan</button>
+</form>
+
+<script>
+$('#closeLoanForm').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(data){
+            $('#partialContainer').html(data);
+        },
+        error: function(){ alert("Error closing loan account."); }
+    });
+});
+</script>
+

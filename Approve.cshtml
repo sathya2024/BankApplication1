@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Approve";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+    }
+
+@model List<BankingService.Services.PendingApprovalViewModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pending Approvals - BankApp</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #5563DE;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            background-color: #5563DE;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #3948b1;
+            }
+
+        .message {
+            text-align: center;
+            margin-bottom: 15px;
+            color: green;
+            font-weight: bold;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 16px;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pending Approvals</h2>
+        @if (TempData["Message"] != null)
+        {
+            <div class="message">@TempData["Message"]</div>
+        }
+        @if (Model != null && Model.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>DepartmentID</th>
+                        <th>PAN</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Type</td>
+                            <td>@item.Name</td>
+                            <td>@item.DepartmentID</td>
+                            <td>@item.PAN</td>
+                            <td>
+                                @using (Html.BeginForm("ApproveUser", "Manager", FormMethod.Post))
+                                {
+                                    @Html.Hidden("pan", item.PAN)
+                                    <button type="submit" class="btn">Approve</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="no-data">No pending approvals found.</div>
+        }
+    </div>
+</body>
+</html>

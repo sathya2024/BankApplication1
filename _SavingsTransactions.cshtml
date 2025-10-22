@@ -1,0 +1,44 @@
+﻿@model List<Banking.SavingsTransaction>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No transactions found.</div>
+}
+else
+{
+    <div class="card pastel-card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Transaction History</span>
+            <button id="viewAllTxnsBtn" class="btn btn-sm btn-outline-primary">View All</button>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var txn in Model)
+                    {
+                        <tr>
+                            <td>@(txn.TransactionDate?.ToShortDateString() ?? "N/A")</td>
+                            <td>@(txn.TransactionType == "D" ? "Deposit" : "Withdraw")</td>
+                            <td>₹@txn.Amount</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $('#viewAllTxnsBtn').click(function () {
+            $('#transactionsContainer').load('/Customer/ViewAllTransactions?id=@ViewBag.CustomerId');
+        });
+    </script>
+}

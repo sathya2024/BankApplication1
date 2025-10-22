@@ -1,0 +1,61 @@
+﻿@model List<Banking.FixedDeposit>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning m-3">No Fixed Deposits found.</div>
+}
+else
+{
+    <div class="pastel-card">
+        <div class="card-header">Fixed Deposit Accounts</div>
+
+        <table class="pastel-table">
+            <thead>
+                <tr>
+                    <th>FD Account ID</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Open Date</th>
+                    <th>Maturity Date</th>
+                    <th>Closure Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fd in Model)
+                {
+                    <tr>
+                        <td>@fd.FDAccountId</td>
+                        <td>₹@fd.Amount</td>
+                        <td>@fd.Status</td>
+                        <td>@(fd.OpenDate?.ToShortDateString() ?? "N/A")</td>
+                        <td>@(fd.MaturityDate?.ToShortDateString() ?? "N/A")</td>
+                        <td>@(fd.CloseDate?.ToShortDateString() ?? "—")</td>
+                        <td>
+                            @if (fd.Status == "Closed")
+                            {
+                                <button class="btn btn-secondary btn-sm" disabled>Already Closed</button>
+                            }
+                            else if (DateTime.Today == fd.MaturityDate?.Date)
+                            {
+                                using (Html.BeginForm("WithdrawFD", "Customer", FormMethod.Post))
+                                {
+                                    @Html.Hidden("fdAccountId", fd.FDAccountId)
+                                    <button type="submit" class="btn btn-success btn-sm">Withdraw</button>
+                                }
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("PrematureWithdraw", "Customer", FormMethod.Post))
+                                {
+                                    @Html.Hidden("fdAccountId", fd.FDAccountId)
+                                    <button type="submit" class="btn btn-danger btn-sm">Premature Close</button>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,12 @@
+﻿@using (Html.BeginForm("EMI", "Customer", FormMethod.Post))
+{
+    @Html.Hidden("customerId", (object)ViewBag.CustomerId)
+    @Html.Hidden("loanId", (object)ViewBag.LoanId)
+
+    <div class="form-group">
+        <label for="monthlyIncome">Monthly Income</label>
+        <input type="number" name="monthlyIncome" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-2">Pay EMI</button>
+}

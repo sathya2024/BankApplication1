@@ -1,0 +1,12 @@
+﻿@using (Html.BeginForm("PartPay", "Customer", FormMethod.Post))
+{
+    @Html.Hidden("customerId", (object)ViewBag.CustomerId)
+    @Html.Hidden("loanId", (object)ViewBag.LoanId)
+
+    <div class="form-group">
+        <label for="amount">Amount to Pay</label>
+        <input type="number" name="amount" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-warning mt-2">Make Part Payment</button>
+}

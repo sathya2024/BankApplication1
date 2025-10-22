@@ -1,0 +1,126 @@
+﻿@*@model List<Banking.LoanAccount>
+    @{
+        ViewBag.Title = "LoanView";
+        Layout = "~/Shared/_LayoutPage1.cshtml";
+    }
+
+    @if (TempData["Message"] != null)
+    {
+        <script>alert("@TempData["Message"]");</script>
+    }
+
+    <div class="container mt-4">
+        <h2>Loan Summary</h2>
+
+        @foreach (var loan in Model)
+        {
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    @Html.Action("LoanDetails", "Customer", new { loanId = loan.LNAccountId })
+
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            @Html.Action("EMI", "Customer", new { loanId = loan.LNAccountId })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Action("PartPay", "Customer", new { loanId = loan.LNAccountId })
+                        </div>
+                        <div class="col-md-4">
+                            @if (loan.LoanStatus != "Foreclosed")
+                            {
+                                @Html.Action("Foreclose", "Customer", new { loanId = loan.LNAccountId })
+                            }
+                            else
+                            {
+                                <span class="text-muted">Loan already foreclosed</span>
+                            }
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+                    <h5>Transaction History</h5>
+                    @Html.Action("LoanTransactions", "Customer", new { loanId = loan.LNAccountId })
+                </div>
+            </div>
+        }
+    </div>*@
+
+@model List<Banking.LoanAccount>
+@{
+    ViewBag.Title = "Loan Summary";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+<style>
+    .btn-custom-blue-1 {
+        background-color: #3399FF;
+        color: white;
+    }
+
+    .btn-custom-blue-2 {
+        background-color: #5A9BD5;
+        color: white;
+    }
+
+    .btn-custom-blue-3 {
+        background-color: #003366;
+        color: white;
+    }
+</style>
+@if (TempData["Message"] != null)
+{
+    <script>alert("@TempData["Message"]");</script>
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Loan Summary</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No loans found.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Loan ID</th>
+                    <th>Amount</th>
+                    <th>Due</th>
+                    <th>Tenure</th>
+                    <th>Start Date</th>
+                    <th>EMI</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var loan in Model)
+                {
+                    <tr>
+                        <td>@loan.LNAccountId</td>
+                        <td>₹@string.Format("{0:N2}", loan.LoanAmount)</td>
+                        <td>₹@string.Format("{0:N2}", loan.DueAmount)</td>
+                        <td>@loan.TimePeriod months</td>
+                        <td>@(loan.StartDate.HasValue ? loan.StartDate.Value.ToString("dd MMM yyyy") : "N/A")</td>
+                        <td>₹@string.Format("{0:N2}", loan.Emi)</td>
+                        <td>@loan.LoanStatus</td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Details", "LoanDetails", new { loanId = loan.LNAccountId }, new { @class = "btn btn-info btn-sm me-2" })
+                                @Html.ActionLink("Transactions", "LoanTransactions", new { loanId = loan.LNAccountId }, new { @class = "btn btn-outline-secondary btn-sm me-2" })
+
+                                @if (loan.LoanStatus != "Foreclosed")
+                                {
+                                    @Html.ActionLink("Pay EMI", "AutoPayEMI", "Customer", new { loanId = loan.LNAccountId }, new { @class = "btn btn-info btn-sm" })
+                                    @Html.ActionLink("PartPay", "PartPay", new { loanId = loan.LNAccountId }, new { @class = "btn btn-info btn-sm me-2" })
+                                    @Html.ActionLink("Foreclose", "Foreclose", new { loanId = loan.LNAccountId }, new { @class = "btn btn-dark btn-sm" })
+                                }
+                            </div>
+                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

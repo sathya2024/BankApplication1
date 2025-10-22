@@ -1,0 +1,94 @@
+﻿@*@model Banking.LoanAccount
+
+    @{
+        ViewBag.Title = "Foreclose Loan";
+    }
+
+    <div class="container mt-4">
+        <h3>Foreclose Loan</h3>
+
+        <table class="table table-bordered">
+            <tr><th>Loan ID</th><td>@Model.LNAccountId</td></tr>
+            <tr><th>Amount</th><td>₹@string.Format("{0:N2}", Model.LoanAmount)</td></tr>
+            <tr><th>Due</th><td>₹@string.Format("{0:N2}", Model.DueAmount)</td></tr>
+            <tr><th>Tenure</th><td>@Model.TimePeriod months</td></tr>
+            <tr><th>Start Date</th><td>@(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("dd MMM yyyy") : "N/A")</td></tr>
+            <tr><th>Status</th><td>@Model.LoanStatus</td></tr>
+        </table>
+
+        <div class="alert alert-warning">
+            Are you sure you want to close the account by paying all due amount ?
+        </div>
+
+        <div class="d-flex gap-2">
+            @using (Html.BeginForm("ForecloseLoan", "Customer", FormMethod.Post))
+            {
+                @Html.Hidden("customerId", Model.CustomerId)
+                @Html.Hidden("loanId", Model.LNAccountId)
+                <button type="submit" class="btn btn-danger">Confirm Foreclosure</button>
+            }
+
+           <a href="@Url.Action("LoanView", "Customer", new { id = Model.CustomerId })" class="btn btn-secondary">CANCEL</a>
+    </div>
+    </div>*@
+@model Banking.LoanAccount
+
+@{
+    ViewBag.Title = "Foreclose Loan";
+}
+
+<div class="container mt-5">
+    <h3 class="mb-4">Foreclose Loan</h3>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered mb-4">
+                <tbody>
+                    <tr>
+                        <th scope="row">Loan ID</th>
+                        <td>@Model.LNAccountId</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Amount</th>
+                        <td>₹@string.Format("{0:N2}", Model.LoanAmount)</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Due</th>
+                        <td>₹@string.Format("{0:N2}", Model.DueAmount)</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tenure</th>
+                        <td>@Model.TimePeriod months</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Start Date</th>
+                        <td>@(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("dd MMM yyyy") : "N/A")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>@Model.LoanStatus</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert alert-warning" role="alert">
+                Are you sure you want to close the account by paying all due amount?
+            </div>
+
+            <div class="d-flex justify-content-between">
+                @using (Html.BeginForm("ForecloseLoan", "Customer", FormMethod.Post))
+                {
+                    @Html.Hidden("customerId", Model.CustomerId)
+                    @Html.Hidden("loanId", Model.LNAccountId)
+                    <button type="submit" class="btn btn-danger px-4">
+                        Confirm Foreclosure
+                    </button>
+                }
+
+                <a href="@Url.Action("LoanView", "Customer", new { id = Model.CustomerId })" class="btn btn-outline-secondary px-4">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

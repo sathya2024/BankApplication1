@@ -1,0 +1,106 @@
+﻿@model BankingService.Services.CustomerDashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+
+<style>
+    .pastel-blue {
+        color: #6fa8dc;
+    }
+
+    .card-icon {
+        font-size: 2rem;
+    }
+
+    .pastel-border {
+        border: 1px solid #a3c4f3;
+        border-radius: 0.5rem;
+    }
+
+    .card-body {
+        background-color: #f8fbff;
+        padding: 1.75rem;
+    }
+
+    .dashboard-wrapper {
+        max-height: 100vh;
+        overflow-y: auto;
+        padding-bottom: 1rem;
+    }
+
+    h4.card-title {
+        font-size: 1.1rem;
+    }
+
+    p.card-text {
+        font-size: 0.9rem;
+    }
+
+    .col {
+        margin-bottom: 1.25rem; /* Adds vertical spacing between stacked cards */
+    }
+</style>
+
+<div class="container dashboard-wrapper mt-3">
+    <h2 class="mb-2 pastel-blue">Welcome @Model.Name</h2>
+    <hr class="mt-1 mb-3" />
+
+    <div class="row row-cols-1 row-cols-md-2 g-3">
+        <!-- Savings Tab -->
+        <div class="col">
+            <div class="card h-100 text-center shadow-sm pastel-border" style="min-height: 200px;">
+                <div class="card-body">
+                    <i class="bi bi-piggy-bank pastel-blue card-icon"></i>
+                    <h4 class="card-title mt-2 pastel-blue">Savings Account</h4>
+                    <p class="card-text mt-1">
+                        @((Model.HasSavings) ? "Access your savings" : "No savings account found")
+                    </p>
+                    <a href="@Url.Action("SavingsView", "Customer", new { id = Model.CustomerId })" class="btn btn-outline-primary btn-sm mt-2">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fixed Deposit Tab -->
+        <div class="col">
+            <div class="card h-100 text-center shadow-sm pastel-border" style="min-height: 200px;">
+                <div class="card-body">
+                    <i class="bi bi-safe pastel-blue card-icon"></i>
+                    <h4 class="card-title mt-2 pastel-blue">Fixed Deposit</h4>
+                    <p class="card-text mt-1">
+                        @((Model.HasFD) ? "View your FD details" : "No FD found")
+                    </p>
+                    <a href="@Url.Action("FDView", "Customer", new { id = Model.CustomerId })" class="btn btn-outline-primary btn-sm mt-2">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loan Tab -->
+        <div class="col">
+            <div class="card h-100 text-center shadow-sm pastel-border" style="min-height: 200px;">
+                <div class="card-body">
+                    <i class="bi bi-cash-coin pastel-blue card-icon"></i>
+                    <h4 class="card-title mt-2 pastel-blue">Loan Account</h4>
+                    <p class="card-text mt-1">
+                        @((Model.HasLoan) ? "Manage your loan" : "No loan account active")
+                    </p>
+                    <a href="@Url.Action("LoanView", "Customer", new { id = Model.CustomerId })" class="btn btn-outline-primary btn-sm mt-2">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Us Tab -->
+        <div class="col">
+            <div class="card h-100 text-center shadow-sm pastel-border" style="min-height: 200px;">
+                <div class="card-body">
+                    <i class="bi bi-envelope pastel-blue card-icon"></i>
+                    <h4 class="card-title mt-2 pastel-blue">Contact Us</h4>
+                    <p class="card-text mt-1">
+                        Need help or have questions? Reach out to our support team.
+                    </p>
+                    <a href="@Url.Action("Contact", "Home")" class="btn btn-outline-primary btn-sm mt-2">Get Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

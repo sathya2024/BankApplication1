@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Banking.SavingsTransaction>
+@{
+    Layout = null;
+}
+
+<div class="transactions-container">
+    <h3>Savings Transactions</h3>
+
+    <div class="transaction-tabs">
+        <button class="tablink active" onclick="loadTransactionPartial('Deposit')">Deposit</button>
+        <button class="tablink" onclick="loadTransactionPartial('Withdraw')">Withdraw</button>
+
+
+        <button class="tablink" onclick="loadTransactionPartial('TransactionHistory')">History</button>
+        <button class="tablink" onclick="loadTransactionPartial('ExportTransactions')">Export</button>
+
+
+
+    </div>
+
+    <div id="transactionPartial" style="margin-top:20px;">
+        <p>Select an option to perform a transaction.</p>
+    </div>
+</div>
+
+<script>
+function loadTransactionPartial(actionName) {
+    $.ajax({
+        url: '/Manager/' + actionName,
+        type: 'GET',
+        success: function(data) {
+            $('#transactionPartial').html(data);
+            $('.tablink').removeClass('active');
+            $('[onclick="loadTransactionPartial(\''+actionName+'\')"]').addClass('active');
+        },
+        error: function(xhr) {
+            alert('Error loading content: ' + xhr.status + ' ' + xhr.statusText);
+        }
+    });
+}
+
+// Load Deposit partial by default
+$(document).ready(function(){
+    loadTransactionPartial('Deposit');
+});
+</script>
+
+<style>
+    .tablink {
+        padding: 8px 18px;
+        margin: 3px;
+        border-radius: 8px;
+        background-color: #5563DE;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+        .tablink.active {
+            background-color: #3e4bd0;
+        }
+
+        .tablink:hover {
+            background-color: #3e4bd0;
+        }
+</style>
+

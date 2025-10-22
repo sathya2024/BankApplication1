@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+
+<h3>Pay Loan EMI</h3>
+
+@if (ViewBag.Message != null)
+{
+    <p style="color:green; font-weight:bold;">@ViewBag.Message</p>
+}
+
+<form id="payEmiForm" method="post" action="@Url.Action("_PayEMI", "Manager")">
+    <div class="form-group">
+        <label>Loan Account ID:</label>
+        <input type="text" name="LNAccountId" class="form-control" maxlength="10" required />
+    </div>
+
+    <button type="button" class="btn btn-info" onclick="fetchLoanDetails()">Fetch Loan Info</button>
+
+    <div id="loanDetails" style="margin-top:20px; display:none;">
+        <p><strong>Total Loan Amount:</strong> ₹<span id="loanAmount">0</span></p>
+        <p><strong>EMI:</strong> ₹<span id="emiAmount">0</span></p>
+        <p><strong>Remaining Due:</strong> ₹<span id="dueAmount">0</span></p>
+
+        <div class="form-group">
+            <label>Pay Amount (₹):</label>
+            <input type="number" name="Amount" class="form-control" id="payAmount" min="1" required />
+        </div>
+
+        <button type="submit" class="btn btn-success">Pay EMI</button>
+    </div>
+</form>
+
+<script>
+    function fetchLoanDetails() {
+        var loanId = $('input[name="LNAccountId"]').val();
+        if (!loanId) { alert("Enter Loan Account ID."); return; }
+
+        $.ajax({
+            url: '/Manager/GetLoanDetails',
+            type: 'GET',
+            data: { LNAccountId: loanId },
+            success: function (response) {
+                if (response.success) {
+                    $('#loanDetails').show();
+                    $('#loanAmount').text(response.data.LoanAmount);
+                    $('#emiAmount').text(response.data.EMI);
+                    $('#dueAmount').text(response.data.DueAmount);
+                    $('#payAmount').attr('max', response.data.DueAmount);
+                } else {
+                    alert(response.message);
+                    $('#loanDetails').hide();
+                }
+            },
+            error: function () { alert("Error fetching loan details."); }
+        });
+    }
+
+    $('#payEmiForm').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (data) {
+                $('#partialContainer').html(data);
+            },
+            error: function () { alert("Error paying EMI."); }
+        });
+    });
+</script>

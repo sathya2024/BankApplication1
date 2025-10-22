@@ -1,0 +1,19 @@
+﻿@model Banking.SavingsAccount
+
+@if (Model == null)
+{
+    <div class="alert alert-warning">No savings account found.</div>
+}
+else
+{
+    <div class="card mb-3 shadow-sm pastel-card">
+        <div class="card-header text-muted">Account Details</div>
+        <div class="card-body">
+            <p><strong>Account ID:</strong> @Model.SBAccountId</p>
+            <p><strong>Balance:</strong> ₹@Model.Balance</p>
+            <p><strong>Branch:</strong> HOSAKEREHALLI</p>
+            <p><strong>IFSC:</strong> CDUP0012678</p>
+            <p><strong>Debit Card:</strong> 8976 4532 6789 9954</p>
+        </div>
+    </div>
+}

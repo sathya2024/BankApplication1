@@ -1,0 +1,37 @@
+﻿
+@model Banking.SavingsAccount
+@{
+    Layout = null;
+}
+
+<h3>Close Savings Bank Account</h3>
+
+@using (Html.BeginForm("_CloseSBAccount", "Manager", FormMethod.Post))
+{
+    <div>
+        <label>Enter Account ID:</label>
+        @Html.TextBox("accountId", null, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div>
+        <label>Closed By (Employee ID):</label>
+        @Html.TextBox("closedBy", null, new { @class = "form-control", required = "required" })
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-danger">Close Account</button>
+}
+
+@if (Model != null)
+{
+    <hr />
+    <h4>Account Details</h4>
+    <p><b>Customer ID:</b> @Model.CustomerId</p>
+    <p><b>Balance:</b> ₹@Model.Balance</p>
+}
+
+@if (ViewBag.Message != null)
+{
+    <p style="color:green">@ViewBag.Message</p>
+}
+

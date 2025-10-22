@@ -1,0 +1,226 @@
+﻿@*@model Banking.Employee
+    @{
+        Layout = null;
+    }
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Add Employee</title>
+        <style>
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #74ABE2, #5563DE);
+                height: 100vh;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .form-container {
+                background-color: #fff;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+                width: 100%;
+                max-width: 500px;
+            }
+
+            h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                font-weight: bold;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                border-radius: 6px;
+                border: 1px solid #ccc;
+            }
+
+            button {
+                width: 100%;
+                padding: 10px;
+                background-color: #5563DE;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+                button:hover {
+                    background-color: #4350c7;
+                }
+
+            .message {
+                text-align: center;
+                color: green;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="form-container">
+            <h2>Add Employee</h2>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="message">@TempData["Message"]</div>
+            }
+
+            @using (Html.BeginForm("Employees", "Manager", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.EmployeeName)
+                        @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.DepartmentId)
+                        @Html.TextBoxFor(m => m.DepartmentId, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.PAN)
+                        @Html.TextBoxFor(m => m.PAN, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required />
+                    </div>
+
+                    <button type="submit">Add Employee</button>
+
+            }
+        </div>
+    </body>
+    </html>*@
+
+
+@model Banking.Employee
+@{
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Add Employee</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5563DE;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #4350c7;
+            }
+
+        .message {
+            text-align: center;
+            color: green;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add Employee</h2>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="message">@TempData["Message"]</div>
+        }
+
+        @using (Html.BeginForm("Employees", "Manager", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmployeeName)
+                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.DepartmentId)
+                @Html.TextBoxFor(m => m.DepartmentId, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.PAN)
+                @Html.TextBoxFor(m => m.PAN, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="Password" class="form-control" required />
+            </div>
+
+            <button type="submit">Add Employee</button>
+        }
+    </div>
+</body>
+</html>
+

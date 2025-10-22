@@ -1,0 +1,16 @@
+﻿
+
+
+@model Banking.LoanAccount
+@{
+    ViewBag.Title = "Loan Account";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Loan Account Page</h2>
+
+@Html.Partial("_CreateLoanAccount")
+@if (TempData["Message"] != null)
+{
+    <script>alert('@TempData["Message"]');</script>
+}

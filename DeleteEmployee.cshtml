@@ -1,0 +1,135 @@
+﻿@*@{
+        ViewBag.Title = "DeleteEmployee";
+    }
+
+
+
+    @model List<Banking.Employee>
+    @{
+        ViewBag.Title = "Delete Employee";
+        Layout = "~/Shared/_LayoutPage1.cshtml";
+    }
+    <div class="container mt-5" style="max-width: 600px;">
+        <h2 class="text-center mb-4">Delete Employee</h2>
+
+        @if (TempData["Message"] != null)
+        {
+            <script>alert('@TempData["Message"]');</script>
+        }
+
+        <form method="post" action="@Url.Action("DeleteEmployeeConfirmed", "Manager")">
+            <div class="form-group">
+                <label for="employeeId">Select Employee to Delete:</label>
+                <select name="employeeId" class="form-control" required>
+                    <option value="">-- Select --</option>
+                    @foreach (var emp in Model)
+                    {
+                        <option value="@emp.EmployeeId">@emp.EmployeeName (@emp.EmployeeId)</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger mt-3">Delete</button>
+        </form>
+    </div>*@
+
+
+@model List<Banking.Employee>
+@{
+    ViewBag.Title = "Delete Employee";
+    Layout = "~/Shared/_LayoutPage1.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Delete Employee</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .delete-container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-top: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1c199d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+            button:hover {
+                background-color: #b52a37;
+            }
+
+        .alert {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="delete-container">
+        <h2>Delete Employee</h2>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert">@TempData["Message"]</div>
+        }
+
+        <form method="post" action="@Url.Action("DeleteEmployeeConfirmed", "Manager")">
+            <div class="form-group">
+                <label for="employeeId">Select Employee to Delete</label>
+                <select name="employeeId" id="employeeId" required>
+                    <option value="">-- Select --</option>
+                    @foreach (var emp in Model)
+                    {
+                        <option value="@emp.EmployeeId">@emp.EmployeeName (@emp.EmployeeId)</option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit">Delete Employee</button>
+        </form>
+    </div>
+</body>
+</html>

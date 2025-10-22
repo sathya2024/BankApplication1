@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Banking.SavingsTransaction>
+@{
+    Layout = null;
+}
+
+<h3>Export Transaction History</h3>
+
+<form id="exportFilterForm" method="post" action="@Url.Action("ExportTransactions","Manager")" style="margin-bottom:15px; display:flex; gap:10px;">
+    <input type="text" name="sbAccountId" class="form-control" placeholder="Enter SB Account ID" maxlength="10" required />
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+@if (ViewBag.AccountId != null)
+{
+    <form method="post" action="@Url.Action("ExportToExcel","Manager")" style="display:inline;">
+        <input type="hidden" name="sbAccountId" value="@ViewBag.AccountId" />
+        <button type="submit" class="btn btn-success">Export to Excel</button>
+    </form>
+
+    <form method="post" action="@Url.Action("ExportToPDF","Manager")" style="display:inline; margin-left:10px;">
+        <input type="hidden" name="sbAccountId" value="@ViewBag.AccountId" />
+        <button type="submit" class="btn btn-danger">Export to PDF</button>
+    </form>
+}
+
+<table class="table table-bordered" style="margin-top:20px;">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Account ID</th>
+            <th>Amount (₹)</th>
+            <th>Type</th>
+            <th>Date & Time</th>
+            <th>Balance (₹)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model)
+        {
+            <tr>
+                <td>@t.TransactionId</td>
+                <td>@t.SBAccountId</td>
+                <td>@t.Amount</td>
+                <td>@t.TransactionType</td>
+                <td>@(t.TransactionDate?.ToString("dd-MM-yyyy HH:mm:ss") ?? "-")</td>
+                <td>@t.Balance</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#exportFilterForm').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (data) {
+                $('#transactionPartial').html(data);
+            },
+            error: function () {
+                alert("Failed to load transactions for export!");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,34 @@
+﻿<div class="container mt-3">
+    <h4>View Loan Transactions</h4>
+
+    <div class="form-inline mb-3">
+        <input type="text" id="LoanAccountIdInput" class="form-control mr-2" placeholder="Enter Loan Account ID" maxlength="10" />
+        <button id="btnFilterLoanTransactions" class="btn btn-primary">Filter</button>
+    </div>
+
+    <div id="loanTransactionContainer">
+        <p>Please enter a Loan Account ID to view transactions.</p>
+    </div>
+</div>
+
+<script>
+    $('#btnFilterLoanTransactions').click(function () {
+        var lnAccountId = $('#LoanAccountIdInput').val().trim();
+        if (!lnAccountId) {
+            alert("Please enter a Loan Account ID.");
+            return;
+        }
+
+        $.ajax({
+            url: '/Manager/_LoanTransactionTable',   // Only loads the table partial
+            type: 'GET',
+            data: { LNAccountId: lnAccountId },
+            success: function (data) {
+                $('#loanTransactionContainer').html(data); // table goes here
+            },
+            error: function (xhr) {
+                alert('Error loading transactions: ' + xhr.status + ' ' + xhr.statusText);
+            }
+        });
+    });
+</script>
